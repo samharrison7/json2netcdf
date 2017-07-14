@@ -1,0 +1,6 @@
+# Sublime Text files
+*.sublime-project
+*.sublime-workspace
+
+# Data files
+*.nc

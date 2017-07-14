@@ -1,0 +1,103 @@
+{
+    "name" : "root",
+    "attributes" : [
+        {
+            "name" : "description",
+            "value" : "This is an attribute."
+        },
+        {
+            "name" : "att2",
+            "value" : "Another attribute."
+        }
+    ],
+    "dimensions" : [
+        {
+            "name" : "size",
+            "size" : 5
+        },
+        {
+            "name" : "density",
+            "size" : "unlimited"
+        }
+    ],
+    "type" : "group",
+    "data" : [
+        {
+            "name" : "global",
+            "type" : "group",
+            "data" : [
+                {
+                    "name" : "sediments",
+                    "dimensions" : [ "size", "density" ],
+                    "attributes" : [
+                        {
+                            "name" : "variable_attribute",
+                            "value" : "Variable attribute"
+                        }
+                    ],
+                    "type" : "variable",
+                    "datatype" : "i4",
+                    "data" : [ [1,2,3,4,5],[1,2,3,4,5],[1,2,3,4,5],[1,2,3,4,5],[1,2,3,4,5] ]
+                },
+                {
+                    "name" : "sediment_size_classes",
+                    "dimensions" : [ "size" ],
+                    "type" : "variable",
+                    "datatype" : "f8",
+                    "data" : [ 1e-6, 3e-6, 10e-6, 30e-6, 100e-6 ]
+                },
+                {
+                    "name" : "nanoparticle_size_classes",
+                    "dimensions" : [ "size" ],
+                    "type" : "variable",
+                    "datatype" : "f8",
+                    "data" : [ 10e-9, 30e-9, 100e-9, 300e-9, 1000e-9 ]
+                }
+            ]
+        },
+        {
+            "name" : "River",
+            "type" : "group",
+            "data" : [
+                {
+                    "name" : "RiverReach",
+                    "type" : "group",
+                    "data" : [
+                        {
+                            "name" : "width",
+                            "type" : "variable", 
+                            "datatype" : "f8",
+                            "data" : 50
+                        },
+                        {
+                            "name" : "slope",
+                            "type" : "variable",
+                            "datatype" : "f8",
+                            "data" : 0.0005
+                        },
+                        {
+                            "name" : "flow",
+                            "type" : "variable",
+                            "datatype" : "f8",
+                            "data" : 300
+                        },
+                        {
+                            "name" : "sediment_particle_density",
+                            "type" : "variable",
+                            "datatype" : "f8",
+                            "dimensions" : [ "density" ],
+                            "data" : [ 2120, 2120, 2120, 2120, 2120 ]
+                        },
+                        {
+                            "name" : "np_particle_density",
+                            "type" : "variable",
+                            "datatype" : "f8",
+                            "dimensions" : [ "density" ],
+                            "data" : [ 2120, 2120, 2120, 2120, 2120 ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
