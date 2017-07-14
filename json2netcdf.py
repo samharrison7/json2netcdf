@@ -4,11 +4,16 @@ import sys
 import json
 
 '''Parse the data and turn into NetCDF file'''
-def parse(json_data, nc_data, hierarchy = []):
+def parse(json_data, nc_data, hierarchy = [], root = True):
     # If this is a group, add it and its dimensions
-    if (json_data['type'] == 'group'):
-        hierarchy.append(json_data['name'])                             # Build the hierarchy
-        nc_group = nc_data.createGroup('/' + '/'.join(hierarchy))       # Create the group (with correct hierarchy)
+    if (root == True or json_data['type'] == 'group'):
+        # If this is the root group, don't create new group for it.
+        # Any name specified will be ignored.
+        if (root == True):
+            nc_group = nc_data
+        else:
+            hierarchy.append(json_data['name'])                             # Build the hierarchy
+            nc_group = nc_data.createGroup('/' + '/'.join(hierarchy))       # Create the group (with correct hierarchy)
         # Does the group have dimensions?
         if 'dimensions' in json_data:
             for dimension in json_data['dimensions']:
@@ -23,7 +28,7 @@ def parse(json_data, nc_data, hierarchy = []):
                 setattr(nc_group, attribute['name'], attribute['value'])                                                                         
         # As we're in a group, recursively call this function until we reach variable
         for nested_data in json_data['data']:
-            parse(nested_data, nc_data, hierarchy)
+            parse(nested_data, nc_data, hierarchy, False)
 
     # If this is a variable, add it and its dimensions
     elif (json_data['type'] == 'variable'):
@@ -40,7 +45,7 @@ def parse(json_data, nc_data, hierarchy = []):
             for attribute in json_data['attributes']:
                 setattr(nc_var, attribute['name'], attribute['value'])
         # Put the data into the newly created variable
-        nc_var[:] = json_data['data']
+        if 'data' in json_data: nc_var[:] = json_data['data']
 
 # Input file
 data_filepath = sys.argv[1] if len(sys.argv)>1 else 'data.json'
