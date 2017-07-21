@@ -27,8 +27,9 @@ def parse(json_data, nc_data, hierarchy = [], root = True):
             for attribute in json_data['attributes']:
                 setattr(nc_group, attribute['name'], attribute['value'])                                                                         
         # As we're in a group, recursively call this function until we reach variable
-        for nested_data in json_data['data']:
-            parse(nested_data, nc_data, hierarchy, False)
+        if 'data' in json_data:
+            for nested_data in json_data['data']:
+                parse(nested_data, nc_data, hierarchy, False)
 
     # If this is a variable, add it and its dimensions
     elif (json_data['type'] == 'variable'):
