@@ -1,6 +1,6 @@
 # json2netcdf
 
-This is a basic Python script to convert a JSON file to a NetCDF4 file, using the [netCDF4](https://github.com/Unidata/netcdf4-python) Python library. It is very much a *work in progress* and no real error checking occurs - make sure your JSON file follows exactly the structure it should! It only implements a small subset of what is actually possible in creating a NetCDF file.
+This is a basic Python script to convert a JSON file to a NetCDF4 file, using the [netCDF4](https://github.com/Unidata/netcdf4-python) Python library. It is very much a *work in progress* and no real error checking occurs (though netCDF4-python contains its own error checking) - make sure your JSON file follows exactly the structure it should! It only implements a small subset of what is actually possible in creating a NetCDF file.
 
 There are numerous NetCDF to JSON parsers, but none that I could find that perform the reverse operation. The motivation? I wanted a quick and easy way to write NetCDF input files without having to write or modify a script for every new input file. JSON files are simple, easy to understand and write, and, crucially, follow a hierarchical format.
 
