@@ -138,7 +138,7 @@ We've now completely mimicked the data structure originally specified. As a fina
                         }
                     ],
                     "datatype" : "f8",
-                    "data" = [ [1.0, 1.1, 1.2, 1.3, 1.4] ]
+                    "data" : [ [1.0, 1.1, 1.2, 1.3, 1.4] ]
                 },
                 {
                     "name" : "y",
