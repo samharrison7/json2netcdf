@@ -17,7 +17,7 @@ Take a look at the sample `data.json` for an idea of how to format your JSON fil
 
 ### Example
 
-For example, say we wanted to mimics the following data structure:
+For example, say we wanted to mimic the following data structure:
 
 - **root** (group)
     - **positions** (group)
@@ -33,7 +33,7 @@ First, we must create the root group, which is present in any NetCDF file. The f
 }
 ```
 
-The next level of the hierarchy is another group called "positions". Thus, the `data` property will be an array containing only one object, and that object will contain information about the "positions" group. Crucially, we need to give the group a `name` and tell the script that is it a group (and not a variable) by defining a `type`. Let's also put a data array in there, as we know "positions" will contain some variables:
+The next level of the hierarchy is another group called "positions". Thus, the `data` property will be an array containing only one object, and that object will contain information about the "positions" group. Crucially, we need to give the group a `name` and tell the script that it is a group (and not a variable) by defining a `type`. Let's also put a `data` array in there, as we know "positions" will contain some variables:
 
 ```json
 {
@@ -65,7 +65,7 @@ NetCDF variables that aren't scalars need pre-defined dimensions given to them, 
 }
 ```
 
-Now, we can add those variables along with the "time" scalar to the positions group. Like groups, variables need a `name` and a `type`, which is now equal to "variable". Additionally, `dimensions` can be specified as an array of dimension names, as well as a `datatype` property, which represents the data type of the variable. These follow the [numpy data type](https://docs.scipy.org/doc/numpy/reference/arrays.dtypes.html) character code convention, in exactly the same fashion as the netcdf4-python library - [see here](http://unidata.github.io/netcdf4-python/#netCDF4.Dataset). For example, "f8" represents a 64-bit floating point number and "i4" a 32-bit signed integer. Scalars, like "time", don't need an dimensions specified. The variable value itself is represented in the `data` property.
+Now, we can add those variables along with the "time" scalar to the positions group. Like groups, variables need a `name` and a `type`, the latter now being equal to "variable". Additionally, `dimensions` can be specified as an array of dimension names, as well as a `datatype` property, which represents the data type of the variable. These follow the [numpy data type](https://docs.scipy.org/doc/numpy/reference/arrays.dtypes.html) character code convention, in exactly the same fashion as the netcdf4-python library - [see here](http://unidata.github.io/netcdf4-python/#netCDF4.Dataset). For example, "f8" represents a 64-bit floating point number and "i4" a 32-bit signed integer. Scalars, like "time", don't need any dimensions specified. The variable value itself is represented in the `data` property.
 
 ```json
 {   
@@ -104,7 +104,7 @@ Now, we can add those variables along with the "time" scalar to the positions gr
 }
 ```
 
-We've now completely mimicked the data structure originally specified. As a final flourish, we can assign some NetCDF attributes to the groups and variables, by specifying an `attributes` property, which contains an array of objects, each object representing a different attribute and containing a `name` and `value` property. These allow us to add metadata (e.g., description of a variable) to the data:
+We've now fully built the data structure originally specified. As a final flourish, we can assign some NetCDF attributes to the groups and variables, by specifying an `attributes` property, which contains an array of objects, each object representing a different attribute and containing a `name` and `value` property. These allow us to add metadata (e.g., description of a variable) to the data:
 
 ```json
 {   
