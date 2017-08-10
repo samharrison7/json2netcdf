@@ -47,7 +47,7 @@ The next level of the hierarchy is another group called "positions". Thus, the `
 }
 ```
 
-NetCDF variables that aren't scalars need pre-defined dimensions given to them, and these dimensions can be defined by any group in the hierarchy. The "x" and "y" variables of the hierarchy we're trying to build both need a 1D array, of sizes 5 and 10, respectively. Let's define these dimensions in the root group (so they can be used in any sub-group), by the use of a `dimensions` property that contains an array of objects, each object representing a dimension with a `name` and `size` (omit size for unlimited-size dimensions):
+NetCDF variables that aren't scalars need pre-defined dimensions given to them, and these dimensions can be defined by any group in the hierarchy. The "x" and "y" variables of the hierarchy we're trying to build both need a 1D array, of sizes 5 and 10, respectively. Let's define these dimensions in the root group (so they can be used in any sub-group), by the use of a `dimensions` property that contains an array of objects, each object representing a dimension with a `name` and `size`. Either omitting or setting `"size" : "unlimited"` will create an unlimited-size dimension.
 
 ```json
 {   
@@ -173,7 +173,7 @@ For completeness, here is the list of available properties for each group object
 - `name`: Name of the group.
 - `dimensions`: Define dimensions available to variables in the group. Array of objects, each object representing a different dimension, and containing the properties:
     - `name`: Name of the dimension.
-    - `size`: Size of the dimension. Omit size for unlimited dimensions.
+    - `size`: Size of the dimension. Set to "unlimited" or omit for unlimited-size dimension.
 - `attributes`: Define attributes of the group. Array of objects, each object representing a different attribute, and containing the properties:
     - `name`: Name of the attribute.
     - `value`: Value of the attribute.
