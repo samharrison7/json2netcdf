@@ -10,8 +10,8 @@
         }
     ],
     "dimensions" : [
-        { "name" : "x", "size" : 5 },
-        { "name" : "y", "size" : 5 }
+        { "name" : "x_dim", "size" : 5 },
+        { "name" : "y_dim", "size" : 10 }
     ],
     "data" : [
         {
@@ -21,7 +21,7 @@
                 {
                     "name" : "x",
                     "type" : "variable",
-                    "dimensions" : [ "x" ],
+                    "dimensions" : [ "x_dim" ],
                     "attributes" : [
                         {
                             "name" : "description",
@@ -34,15 +34,15 @@
                 {
                     "name" : "y",
                     "type" : "variable",
-                    "dimensions" : [ "y" ],
+                    "dimensions" : [ "y_dim" ],
                     "attributes" : [
                         {
                             "name" : "description",
                             "value" : "Positions on y-direction at a given time."
                         }
                     ],
-                    "datatype" : "f8",
-                    "data" : [ [2.0,2.1,2.2,2.3,2.4] ]
+                    "datatype" : "i4",
+                    "data" : [ [1,2,3,4,5,6,7,8,9,10] ]
                 },
                 {
                     "name" : "time",

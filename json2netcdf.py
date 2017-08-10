@@ -5,7 +5,7 @@ import sys
 import json
 
 '''Parse the data and turn into NetCDF file'''
-def parse(json_data, nc_data, hierarchy = [], root = True, i=0):
+def parse(json_data, nc_data, hierarchy = [], root = True):
     # Local names reference the same object, so appending to hierarchy without copying it first
     # alters everything that refers to it. I.e. siblings groups end up as children of their siblings
     hierarchy = deepcopy(hierarchy)
@@ -33,7 +33,7 @@ def parse(json_data, nc_data, hierarchy = [], root = True, i=0):
         # As we're in a group, recursively call this function until we reach variable
         if 'data' in json_data:
             for nested_data in json_data['data']:
-                parse(nested_data, nc_data, hierarchy, False, i)
+                parse(nested_data, nc_data, hierarchy, False)
 
     # If this is a variable, add it and its dimensions
     elif (json_data['type'] == 'variable'):
