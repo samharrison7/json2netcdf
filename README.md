@@ -83,7 +83,7 @@ Now, we can add those variables along with the "time" scalar to the positions gr
                     "type" : "variable",
                     "dimensions" : [ "x_dim" ],
                     "datatype" : "f8",
-                    "data" = [ [1.0, 1.1, 1.2, 1.3, 1.4] ]
+                    "data" : [ [1.0, 1.1, 1.2, 1.3, 1.4] ]
                 },
                 {
                     "name" : "y",
