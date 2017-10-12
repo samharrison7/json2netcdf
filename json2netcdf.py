@@ -12,7 +12,7 @@ def parse(json_data, nc_data, hierarchy = [], root = True):
     hierarchy = deepcopy(hierarchy)
     # If this is referencing an external data file
     if ("json" in json_data):
-        with open(base_dir + "/" + json_data['json']) as external_data:
+        with open(base_dir + json_data['json']) as external_data:
             external_data = json.loads(external_data.read())
         json_data = external_data
     # If this is a group, add it and its dimensions
@@ -45,7 +45,7 @@ def parse(json_data, nc_data, hierarchy = [], root = True):
     elif (json_data['type'] == 'variable'):
         # If we're trying to get data from external file
         if (isinstance(json_data['data'],str) and ".json" in json_data['data']):
-            with open(base_dir + "/" + json_data['data']) as external_data:
+            with open(base_dir + json_data['data']) as external_data:
                 external_data = json.loads(external_data.read())
             json_data['data'] = external_data
         # Have dimensions been specified or are we dealing with a scalar?
@@ -71,6 +71,8 @@ nc_filepath = sys.argv[2] if len(sys.argv)>2 else 'data.nc'
 with open(data_filepath) as data_file:
     data_file = json.loads(data_file.read())
 base_dir = os.path.dirname(data_filepath)
+if base_dir != "":
+    base_dir = base_dir + "/"
 
 nc_data = Dataset(nc_filepath,'w')
 parse(data_file, nc_data)
