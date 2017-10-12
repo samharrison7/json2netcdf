@@ -5,5 +5,5 @@ test.json
 *.sublime-project
 *.sublime-workspace
 
-# Data files
+# Generated data files
 *.nc

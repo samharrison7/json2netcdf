@@ -1,0 +1,12 @@
+{
+    "name" : "more_data",
+    "type" : "group",
+    "data" : [
+        {
+            "name" : "another_variable",
+            "type" : "variable",
+            "datatype" : "i4",
+            "data" : 42
+        }
+    ]
+}

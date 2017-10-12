@@ -1,6 +1,7 @@
 '''Python script for creating, reading and manipulating NetCDF files'''
 from netCDF4 import Dataset
 from copy import deepcopy
+import os
 import sys
 import json
 
@@ -9,6 +10,11 @@ def parse(json_data, nc_data, hierarchy = [], root = True):
     # Local names reference the same object, so appending to hierarchy without copying it first
     # alters everything that refers to it. I.e. siblings groups end up as children of their siblings
     hierarchy = deepcopy(hierarchy)
+    # If this is referencing an external data file
+    if ("json" in json_data):
+        with open(base_dir + "/" + json_data['json']) as external_data:
+            external_data = json.loads(external_data.read())
+        json_data = external_data
     # If this is a group, add it and its dimensions
     if (root == True or json_data['type'] == 'group'):
         # If this is the root group, don't create new group for it.
@@ -37,6 +43,11 @@ def parse(json_data, nc_data, hierarchy = [], root = True):
 
     # If this is a variable, add it and its dimensions
     elif (json_data['type'] == 'variable'):
+        # If we're trying to get data from external file
+        if (isinstance(json_data['data'],str) and ".json" in json_data['data']):
+            with open(base_dir + "/" + json_data['data']) as external_data:
+                external_data = json.loads(external_data.read())
+            json_data['data'] = external_data
         # Have dimensions been specified or are we dealing with a scalar?
         if ('dimensions' in json_data):
             nc_var = nc_data.createVariable('/' + '/'.join(hierarchy) + '/' + json_data['name'],
@@ -59,6 +70,7 @@ nc_filepath = sys.argv[2] if len(sys.argv)>2 else 'data.nc'
 # Create the data file and parse
 with open(data_filepath) as data_file:
     data_file = json.loads(data_file.read())
+base_dir = os.path.dirname(data_filepath)
 
 nc_data = Dataset(nc_filepath,'w')
 parse(data_file, nc_data)

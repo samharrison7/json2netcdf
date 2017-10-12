@@ -29,7 +29,7 @@
                         }
                     ],
                     "datatype" : "f8",
-                    "data" : [ [1.0,1.1,1.2,1.3,1.4] ]
+                    "data" : [1.0,1.1,1.2,1.3,1.4]
                 },
                 {
                     "name" : "y",
@@ -42,13 +42,16 @@
                         }
                     ],
                     "datatype" : "i4",
-                    "data" : [ [1,2,3,4,5,6,7,8,9,10] ]
+                    "data" : "y.json"
                 },
                 {
                     "name" : "time",
                     "type" : "variable",
                     "datatype" : "f8",
                     "data" : 100
+                },
+                {
+                    "json" : "external.json"
                 }
             ]
         }

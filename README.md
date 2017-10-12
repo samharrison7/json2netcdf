@@ -165,6 +165,37 @@ We've now fully built the data structure originally specified. As a final flouri
 }
 ```
 
+### Multiple input files
+
+The main input file specified when running the script can contain reference to other JSON files in the JSON data structure, so that large data sets can be split. The external JSON file can either be specified as a separate item in the array of data objects (for groups or variables), or directly as a data object itself (only for variables). For example:
+
+```json
+"data" : [
+    {
+        "json" : "external.json"
+    },
+    {
+        "name" : "a_variable",
+        "type" : "variable",
+        "datatype" : "f8",
+        "data" : 100
+    }
+]
+```
+
+The above will replace that particular element of the data array with the data structure in the external.json file. Or, alternatively:
+
+```json
+{
+    "name" : "a_variable",
+    "type" : "variable",
+    "datatype" : "f8",
+    "data" : "external_data.json"
+}
+```
+
+In this case, external_data.json would contain a real scalar. Obviously, this will be more useful with complex multi-dimensional data structures. See the [example data.json](example/data.json) file for example of this in action.
+
 ### List of group properties
 
 For completeness, here is the list of available properties for each group object:
@@ -178,6 +209,7 @@ For completeness, here is the list of available properties for each group object
     - `name`: Name of the attribute.
     - `value`: Value of the attribute.
 - `data`: Array of objects that represent either variables or sub-groups within the group.
+- `json`: Path to external data file with further groups/variables. The top-level group/variable in the external file overrides any of the other properties specified in this group.
 
 ### List of variable properties
 
@@ -188,4 +220,4 @@ For completeness, here is the list of available properties for each group object
 - `attributes`: Define attributes of the variable. Array of objects, each object representing a different attribute, and containing the properties:
     - `name`: Name of the attribute.
     - `value`: Value of the attribute.
-- `data`: The data to the stored in the variable.
+- `data`: The data to be stored in the variable, or path to an external JSON file where the data are stored.
