@@ -187,7 +187,7 @@ The above will replace that particular element of the data array with the data s
 
 ```json
 {
-    "json" : "external.json"
+    "json" : "external.json",
     "name" : "name_to_override_group_name_in_external_file"
 },
 ```
