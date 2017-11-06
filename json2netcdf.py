@@ -11,10 +11,15 @@ def parse(json_data, nc_data, hierarchy = [], root = True):
     # alters everything that refers to it. I.e. siblings groups end up as children of their siblings
     hierarchy = deepcopy(hierarchy)
     # If this is referencing an external data file
-    if ("json" in json_data):
+    if 'json' in json_data:
+        # Override the name if one is given in parent JSON file
+        name_override = json_data['name'] if "name" in json_data else None
+        # Open the external data file
         with open(base_dir + json_data['json']) as external_data:
             external_data = json.loads(external_data.read())
         json_data = external_data
+        # If name is to be overriden, do so
+        if name_override is not None: json_data['name'] = name_override
     # If this is a group, add it and its dimensions
     if (root == True or json_data['type'] == 'group'):
         # If this is the root group, don't create new group for it.

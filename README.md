@@ -183,7 +183,16 @@ The main input file specified when running the script can contain reference to o
 ]
 ```
 
-The above will replace that particular element of the data array with the data structure in the external.json file. Or, alternatively:
+The above will replace that particular element of the data array with the data structure in the external.json file. A `name` property can be specified in the parent JSON file to override that in external.json:
+
+```json
+{
+    "json" : "external.json"
+    "name" : "name_to_override_group_name_in_external_file"
+},
+```
+
+Alternatively, external data can be passed directly to the `data` property:
 
 ```json
 {

@@ -52,6 +52,10 @@
                 },
                 {
                     "json" : "external.json"
+                },
+                {
+                    "json" : "external.json",
+                    "name" : "more_data_with_a_different_group_name"
                 }
             ]
         }
