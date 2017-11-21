@@ -1,4 +1,4 @@
-'''Python script for creating, reading and manipulating NetCDF files'''
+'''Python script for creating a NetCDF file from one or more JSON files'''
 from netCDF4 import Dataset
 from copy import deepcopy
 import os
