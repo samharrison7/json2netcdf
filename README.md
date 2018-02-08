@@ -9,8 +9,9 @@ There are numerous NetCDF to JSON parsers, but none that I could find that perfo
 Simply run the script, and if you like, specify the input and output file paths (these default to "data.json" and "data.nc"). Oh, and make sure you have the Python [netCDF4](https://github.com/Unidata/netcdf4-python) library installed.
 
 ```bash
-$ python netcdf2json.py input.json output.nc
+$ python json2netcdf.py input.json output.nc
 ```
+
 ## JSON input format
 
 Take a look at the sample `data.json` for an idea of how to format your JSON file. The hierarchy mimics that of a NetCDF file, and each hierarchical level is represented by a `data` property, which contains an array of objects that are either groups or variables.
@@ -230,3 +231,24 @@ For completeness, here is the list of available properties for each group object
     - `name`: Name of the attribute.
     - `value`: Value of the attribute.
 - `data`: The data to be stored in the variable, or path to an external JSON file where the data are stored.
+
+## json2netcdf-compact
+A version of the script exists ([json2netcdf-compact.py](/json2netcdf-compact.py)) that allows much more "compact" and logical JSON structure to be converted than that documented above. This is the beginnings of the next version of json2netcdf but is currently undocumented. Use with caution! Here's a quick JSON example, which will result in an almost identical NetCDF file to the full JSON example above:
+
+```json
+{   
+    "dimensions" : {
+        "x_dim" : 5,
+        "y_dim" : 10
+    },
+    "attributes" : {
+        "description" : "Example data file.",
+        "author" : "Sam Harrison"
+    },
+    "positions" : {
+        "x[x_dim]" : [ 1.0, 1.1, 1.2, 1.3, 1.4 ],
+        "y[y_dim]" : [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ]
+    },
+    "time" : 100
+}
+```
