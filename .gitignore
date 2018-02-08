@@ -1,9 +1,14 @@
 # Test files
 test.json
+example/compact.json
+example/bed-sediment.json
+example/soil-profile.json
+example/t.json
 
-# Sublime Text files
+# IDE / editor files
 *.sublime-project
 *.sublime-workspace
+.idea/
 
 # Generated data files
 *.nc
