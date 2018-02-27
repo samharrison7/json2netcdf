@@ -57,6 +57,9 @@ def parse_var(name, data, nc_data, hierarchy):
     dimensions = re.findall('\[(.*?)\]', name)
     # Then retrieve just the name, without the dimensions (square brackets)
     parsed_name = name.split('[')[0]
+    # Check if the number is to be spread across an array
+    if "..." in data:
+        # Do something
     # Convert to numpy array to get dtype object
     np_data = np.array(data)
     # Create the variable
