@@ -59,7 +59,16 @@ def parse_var(name, data, nc_data, hierarchy):
     parsed_name = name.split('[')[0]
     # Check if the number is to be spread across an array
     if isinstance(data, str) and "..." in data and len(dimensions) == 1:
-        data = [re.findall('\[(.*?)\.\.\.\]', data)] * len(nc_data.dimensions[dimensions[0]])
+        datum = re.findall('\[(.*?)\.\.\.\]', data)[0]
+        # Check if the spreaded var is a float/integer
+        try:
+            datum = float(datum)
+            datum = int(datum) if datum.is_integer() else datum
+        except:
+            pass
+        # Spread across the length of the dimension
+        data = [datum] * len(nc_data.dimensions[dimensions[0]])
+
     # Convert to numpy array to get dtype object
     np_data = np.array(data)
     # Create the variable
