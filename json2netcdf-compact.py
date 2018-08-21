@@ -18,15 +18,21 @@ def parse(json_group, nc_data, hierarchy=[], root=True):
     # if root or isinstance(json_group, dict):
     # Get the NC group we're currently in
     current_group = nc_data['/' + '/'.join(hierarchy)] if not root else nc_data
+    # Get the dimensions first, because if they're not first in the json_group, then parsing a var
+    # that uses them will fail
+    if 'dimensions' in json_group:
+        for dim_name, size in json_group['dimensions'].items():
+            # Dimension will be specified size if it's an integer, else unlimited
+            current_group.createDimension(dim_name, (size if (isinstance(size, int) and size>0) else None))
     # Loop through this group's items
     for name, data in json_group.items():
         # If this item is a list of dimensions, create them
-        if name == 'dimensions':
-            for dim_name, size in data.items():
-                # Dimension will be specified size if it's an integer, else unlimited
-                current_group.createDimension(dim_name, (size if (isinstance(size, int) and size>0) else None))
+        # if name == 'dimensions':
+        #     for dim_name, size in data.items():
+        #         # Dimension will be specified size if it's an integer, else unlimited
+        #         current_group.createDimension(dim_name, (size if (isinstance(size, int) and size>0) else None))
         # If this item is a list of attributes, create them
-        elif name == 'attributes':
+        if name == 'attributes':
             for att_name, value in data.items():
                 setattr(current_group, att_name, value)
         # If this item is a group
