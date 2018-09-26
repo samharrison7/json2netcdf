@@ -66,8 +66,10 @@ def parse(json_group, nc_data, hierarchy=[], root=True, verbose=False):
     if root:
         print("Filling variables ({0}) with data".format(len(data_to_fill)))
         for i, data in enumerate(data_to_fill):
-            variables_to_fill[i][:] = data
-
+            try:
+                variables_to_fill[i][:] = data
+            except (IndexError, ValueError) as err:
+                print('{0}. Variable: {1}/{2}'.format(err, variables_to_fill[i].group().path, variables_to_fill[i].name))
 
 # Parse a variable item, given its name, data and hierarchy
 def parse_var(name, data, nc_data, hierarchy):
@@ -82,11 +84,15 @@ def parse_var(name, data, nc_data, hierarchy):
     # variable we're about to create
     data_to_fill.append(np_data)
     # Create the variable
-    nc_var = nc_data.createVariable(
-        '/' + '/'.join(hierarchy + [parsed_name]),
-        np_data.dtype,
-        tuple(dimensions)
-    )
+    try:
+        nc_var = nc_data.createVariable(
+            '/' + '/'.join(hierarchy + [parsed_name]),
+            np_data.dtype,
+            tuple(dimensions)
+        )
+    except TypeError as err:
+        print('{0}. Variable: {1}'.format(err, '/' + '/'.join(hierarchy + [parsed_name])))
+
     # Add the newly created variable to the list of variables to
     # fill later
     variables_to_fill.append(nc_var)
