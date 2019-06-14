@@ -37,6 +37,7 @@ def parse(json_group, nc_data, hierarchy=[], root=True):
                 setattr(current_group, att_name, value)
         # If this item is a group
         elif isinstance(data, dict):
+            print("Creating group {0}".format(name))
             new_group = nc_data.createGroup('/' + '/'.join(hierarchy + [name]))   # Create this group
             parse(data, nc_data, hierarchy + [name], False)
         # Otherwise, it must be data or an external file
