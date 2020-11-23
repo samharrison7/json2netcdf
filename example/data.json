@@ -1,63 +1,16 @@
 {
-    "attributes" : [
-        {
-            "name" : "description",
-            "value" : "Example data file."
-        },
-        {
-            "name" : "author",
-            "value" : "Sam Harrison"
-        }
-    ],
-    "dimensions" : [
-        { "name" : "x_dim", "size" : 5 },
-        { "name" : "y_dim", "size" : 10 }
-    ],
-    "data" : [
-        {
-            "name" : "positions",
-            "type" : "group",
-            "data" : [
-                {
-                    "name" : "x",
-                    "type" : "variable",
-                    "dimensions" : [ "x_dim" ],
-                    "attributes" : [
-                        {
-                            "name" : "description",
-                            "value" : "Positions on x-direction at a given time."
-                        }
-                    ],
-                    "datatype" : "f8",
-                    "data" : [1.0,1.1,1.2,1.3,1.4]
-                },
-                {
-                    "name" : "y",
-                    "type" : "variable",
-                    "dimensions" : [ "y_dim" ],
-                    "attributes" : [
-                        {
-                            "name" : "description",
-                            "value" : "Positions on y-direction at a given time."
-                        }
-                    ],
-                    "datatype" : "i4",
-                    "data" : "y.json"
-                },
-                {
-                    "name" : "time",
-                    "type" : "variable",
-                    "datatype" : "f8",
-                    "data" : 100
-                },
-                {
-                    "json" : "external.json"
-                },
-                {
-                    "json" : "external.json",
-                    "name" : "more_data_with_a_different_group_name"
-                }
-            ]
-        }
-    ]
+	"dimensions" : {
+		"x" : 2,
+		"y" : 2,
+		"t" : 2
+	},
+	"attributes" : {
+		"description" : "Example data file",
+		"author" : "Sam Harrison"
+	},
+	"var_group" : {
+		"spatial_var[x,y]" : [[1, 2], [3, 4]],
+		"spatiotemporal_var[x,y,t]" : [[[1.1, 1.2], [1.3, 1.4]], [[1.5, 1.6], [1.7, 1.8]]]
+	},
+	"scalar_var" : 42.0
 }

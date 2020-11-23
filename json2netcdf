@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 '''Python script for creating a NetCDF file from one or more JSON files'''
 from netCDF4 import Dataset
 from copy import deepcopy
@@ -7,7 +8,6 @@ import os
 import sys
 import json
 import argparse
-import timeit
 
 data_to_fill = []
 variables_to_fill = []
@@ -18,8 +18,6 @@ def parse(json_group, nc_data, hierarchy=[], root=True, verbose=False):
     # Local names reference the same object, so appending to hierarchy without copying it first
     # alters everything that refers to it. I.e. siblings groups end up as children of their siblings
     hierarchy = deepcopy(hierarchy)
-    # If this is a group, loop through its items and see what they are (dimensions, attributes or group/data)
-    # if root or isinstance(json_group, dict):
     # Get the NC group we're currently in
     current_group = nc_data['/' + '/'.join(hierarchy)] if not root else nc_data
     # Get the dimensions first, because if they're not first in the json_group, then parsing a var
@@ -34,10 +32,13 @@ def parse(json_group, nc_data, hierarchy=[], root=True, verbose=False):
         if name == 'attributes':
             for att_name, value in data.items():
                 setattr(current_group, att_name, value)
+        # If this item is the dimensions, ignore it
+        elif name == 'dimensions':
+            pass
         # If this item is a group
         elif isinstance(data, dict):
             print("Creating group {0}".format(name))
-            new_group = nc_data.createGroup('/' + '/'.join(hierarchy + [name]))   # Create this group
+            _ = nc_data.createGroup('/' + '/'.join(hierarchy + [name]))   # Create this group
             # If the verbose option was specified
             if verbose and len(hierarchy) < 2:
                 print("Creating group {0}".format(name))
@@ -51,7 +52,7 @@ def parse(json_group, nc_data, hierarchy=[], root=True, verbose=False):
                     external_data = json.loads(external_data.read())
                 # If the external data is a group
                 if isinstance(external_data, dict):
-                    new_group = nc_data.createGroup('/' + '/'.join(hierarchy + [name]))
+                    _ = nc_data.createGroup('/' + '/'.join(hierarchy + [name]))
                     parse(external_data, nc_data, hierarchy + [name], False, verbose=verbose)
                 # Otherwise, it must be a variable
                 else:
@@ -74,9 +75,10 @@ def parse(json_group, nc_data, hierarchy=[], root=True, verbose=False):
 
 # Parse a variable item, given its name, data and hierarchy
 def parse_var(name, data, nc_data, hierarchy):
-    # start_time = timeit.default_timer()
     # Get the dimensions from the name, which are between square brackets
-    dimensions = re.findall('\[(.*?)\]', name)
+    dimensions = re.findall(r'\[(.*?)\]', name)
+    if len(dimensions) > 0:
+        dimensions = dimensions[0].split(',')
     # Then retrieve just the name, without the dimensions (square brackets)
     parsed_name = name.split('[')[0]
     # Convert to numpy array to get dtype object
@@ -97,15 +99,13 @@ def parse_var(name, data, nc_data, hierarchy):
     # Add the newly created variable to the list of variables to
     # fill later
     variables_to_fill.append(nc_var)
-    # elapsed = timeit.default_timer() - start_time
-    # print("Time elapsed to create {0}: {1}".format(name, elapsed))
 
 
 # Parse the command line arguments
-parser = argparse.ArgumentParser()
-parser.add_argument('input')
-parser.add_argument('output')
-parser.add_argument('-v', '--verbose', action='store_true')
+parser = argparse.ArgumentParser(description='Convert JSON to NetCDF files.')
+parser.add_argument('input', help='path to the input JSON file')
+parser.add_argument('output', help='path to store the output NetCDF file to')
+parser.add_argument('-v', '--verbose', action='store_true', help='make terminal output more verbose')
 args = parser.parse_args()
 data_filepath = args.input
 nc_filepath = args.output
