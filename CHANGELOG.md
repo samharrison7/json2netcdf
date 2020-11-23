@@ -1,5 +1,5 @@
 # Changelog
-Notable changes to JSON2NetCDF will be documented here.
+Notable changes to json2netcdf will be documented here.
 
 ## [Unreleased]
 

@@ -1,6 +1,6 @@
 # Contribution Guide
 
-Thanks for considering contributing to JSON2NetCDF. We very much welcome your input.
+Thanks for considering contributing to json2netcdf. We very much welcome your input.
 
 ## Bug reports
 

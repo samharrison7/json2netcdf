@@ -1,6 +1,6 @@
-# JSON2NetCDF
+# json2netcdf
 
-JSON2NetCDF is a Python script to convert one or more JSON files to a NetCDF4 file. There are numerous NetCDF to JSON parsers, but few that perform the reverse operation. The motivation? A quick and easy way to write NetCDF input files without having to write or modify a script to do so. JSON files are simple, easy to understand and write, and, crucially, follow a hierarchical format.
+json2netcdf is a Python script to convert one or more JSON files to a NetCDF4 file. There are numerous NetCDF to JSON parsers, but few that perform the reverse operation. The motivation? A quick and easy way to write NetCDF input files without having to write or modify a script to do so. JSON files are simple, easy to understand and write, and, crucially, follow a hierarchical format.
 
 ## Getting started
 
@@ -11,7 +11,7 @@ $ git clone https://github.com/samharrison7/json2netcdf
 $ cd json2netcdf
 ```
 
-JSON2NetCDF is a Python script which relies on NumPy and netCDF4. If you've got relatively recent version of these packages in your environment, then the script will probably work out of the box. If not, or if you'ld like to keep things clean, then you can use the provided Conda [environment.yaml](./environment.yaml) file to create an environment to run JSON2NetCDF from:
+json2netcdf is a Python script which relies on NumPy and netCDF4. If you've got relatively recent version of these packages in your environment, then the script will probably work out of the box. If not, or if you'ld like to keep things clean, then you can use the provided Conda [environment.yaml](./environment.yaml) file to create an environment to run json2netcdf from:
 
 ```bash
 $ conda env create -f environment.yaml
