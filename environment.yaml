@@ -1,0 +1,7 @@
+name: json2netcdf
+channels:
+  - conda-forge
+dependencies:
+  - python=3.6
+  - numpy
+  - netCDF4

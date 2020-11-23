@@ -1,12 +1,8 @@
 {
-    "name" : "more_data",
-    "type" : "group",
-    "data" : [
-        {
-            "name" : "another_variable",
-            "type" : "variable",
-            "datatype" : "i4",
-            "data" : 42
-        }
-    ]
+    "dimensions" : {
+        "x" : 10,
+        "y" : 5
+    },
+    "external_group" : "file::external_group.json",
+    "external_var[x,y]" : "file::external_var.json"
 }
