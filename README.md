@@ -1,5 +1,7 @@
 # json2netcdf
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4286216.svg)](https://doi.org/10.5281/zenodo.4286216)
+
 json2netcdf is a Python script to convert one or more JSON files to a NetCDF4 file. There are numerous NetCDF to JSON parsers, but few that perform the reverse operation. The motivation? A quick and easy way to write NetCDF input files without having to write or modify a script to do so. JSON files are simple, easy to understand and write, and, crucially, follow a hierarchical format.
 
 ## Getting started
