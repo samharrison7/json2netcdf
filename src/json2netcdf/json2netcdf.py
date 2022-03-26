@@ -1,23 +1,41 @@
-#!/usr/bin/env python
-'''Python script for creating a NetCDF file from one or more JSON files.'''
-from netCDF4 import Dataset
+"""Python package for converting JSON data to NetCDF data"""
+import os
+import re
+import json
 from copy import deepcopy
 import numpy as np
-import re
-import os
-import json
-import argparse
+from netCDF4 import Dataset
 
-data_to_fill = []
-variables_to_fill = []
 
-# Parse the data and turn into NetCDF file. Parse will only over be called for groups,
-# variables within that group are created by the parse method called for that group.
-# The parse function is called recursively 
-def parse(json_group, nc_data, hierarchy=[], root=True, verbose=False):
+def convert(from_json, to_netcdf='data.nc', diskless=False, log_level=0):
+    """Convert JSON data to NetCDF data. Returns the NetCDF file object
+    and so can be used as a context manager."""
+    # Is "from" a file path, in which case open it
+    if type(from_json) is not dict:
+        with open(from_json) as json_file:
+            json_data = json.loads(json_file.read())
+            base_dir = os.path.dirname(from_json)
+    else:
+        json_data = from_json
+        base_dir = None
+    # Create the NetCDF file
+    nc_data = Dataset(to_netcdf, 'w', diskless=diskless)
+    # Do the conversion
+    _, _, nc_data = __parse(json_data, nc_data, log_level=log_level, base_dir=base_dir)
+    # Return the dataset
+    return nc_data
+
+
+def __parse(json_group, nc_data, hierarchy=[], root=True, log_level=0, base_dir=None,
+          data_to_fill=[], variables_to_fill=[]):
+    """Parse the data and turn into NetCDF file. Parse will only over be called for groups,
+    variables within that group are created by the parse method called for that group.
+    The parse function is called recursively"""
     # Local names reference the same object, so appending to hierarchy without copying it first
     # alters everything that refers to it. I.e. siblings groups end up as children of their siblings
     hierarchy = deepcopy(hierarchy)
+    data_to_fill = deepcopy(data_to_fill)
+    variables_to_fill = deepcopy(variables_to_fill)
     # Get the NC group we're currently in
     current_group = nc_data['/' + '/'.join(hierarchy)] if not root else nc_data
     # Get the dimensions first, because if they're not first in the json_group, then parsing a var
@@ -40,39 +58,54 @@ def parse(json_group, nc_data, hierarchy=[], root=True, verbose=False):
             # Create this group
             _ = nc_data.createGroup('/' + '/'.join(hierarchy + [name]))
             # If the verbose option was specified, print that we're creating this group
-            if verbose and len(hierarchy) < 2:
+            if (log_level > 1) and len(hierarchy) < 2:
                 print(f'Creating group {name}')
-            parse(data, nc_data, hierarchy + [name], False, verbose=verbose)
+            data_to_fill, variables_to_fill, _ = __parse(data, nc_data, hierarchy + [name], root=False,
+                                                         log_level=log_level, base_dir=base_dir,
+                                                         data_to_fill=data_to_fill,
+                                                         variables_to_fill=variables_to_fill)
         # Otherwise, it must be data or an external file
         else:
             # Is this variable referencing an external file?
             if isinstance(data, str) and data[:6] == "file::":
                 file_path = data[6:]
-                with open(base_dir + file_path) as external_data:
+                with open(os.path.join(base_dir, file_path)) as external_data:
                     external_data = json.loads(external_data.read())
                 # If the external data is a group
                 if isinstance(external_data, dict):
                     _ = nc_data.createGroup('/' + '/'.join(hierarchy + [name]))
-                    parse(external_data, nc_data, hierarchy + [name], False, verbose=verbose)
+                    data_to_fill, variables_to_fill, _ = __parse(external_data, nc_data, hierarchy + [name],
+                                                                 root=False, log_level=log_level, base_dir=base_dir,
+                                                                 data_to_fill=data_to_fill,
+                                                                 variables_to_fill=variables_to_fill)
                 # Otherwise, it must be a variable
                 else:
-                    parse_var(name, external_data, nc_data, hierarchy, verbose)
+                    data_to_fill, variables_to_fill = __parse_var(name, external_data, nc_data, hierarchy, log_level,
+                                                                  data_to_fill=data_to_fill,
+                                                                  variables_to_fill=variables_to_fill)
             # Otherwise, it must be data (not from external file)
             else:
-                parse_var(name, data, nc_data, hierarchy, verbose)
+                data_to_fill, variables_to_fill = __parse_var(name, data, nc_data, hierarchy, log_level,
+                                                              data_to_fill=data_to_fill,
+                                                              variables_to_fill=variables_to_fill)
 
     # If this is the root group and have got this far, we must be done creating variables/groups
     # and can eventually fill then. This step is left to last to speed things up
     if root:
-        print(f'Filling variables ({len(data_to_fill)}) with data')
+        if log_level > 0:
+            print(f'Filling variables ({len(data_to_fill)}) with data')
         for i, data in enumerate(data_to_fill):
             try:
                 variables_to_fill[i][:] = data
             except (IndexError, ValueError) as err:
                 print(f'{err}. Variable: {variables_to_fill[i].group().path}/{variables_to_fill[i].name}')
 
-# Parse a variable item, given its name, data and hierarchy
-def parse_var(name, data, nc_data, hierarchy, verbose):
+    # Finally, return the NetCDF database
+    return data_to_fill, variables_to_fill, nc_data
+
+
+def __parse_var(name, data, nc_data, hierarchy, log_level, data_to_fill, variables_to_fill):
+    """Parse a variable item, given its name, data and hierarchy"""
     # Get the dimensions from the name, which are between square brackets
     dimensions = re.findall(r'\[(.*?)\]', name)
     if len(dimensions) > 0:
@@ -91,7 +124,7 @@ def parse_var(name, data, nc_data, hierarchy, verbose):
             np_data.dtype,
             tuple(dimensions)
         )
-        if verbose and len(hierarchy) < 2:
+        if (log_level > 1) and len(hierarchy) < 2:
             print(f'Creating variable {parsed_name}')
     except TypeError as err:
         print(f'{err}. Variable: / {"/".join(hierarchy + [parsed_name])}')
@@ -99,24 +132,4 @@ def parse_var(name, data, nc_data, hierarchy, verbose):
     # Add the newly created variable to the list of variables to fill later
     variables_to_fill.append(nc_var)
 
-
-# Parse the command line arguments
-parser = argparse.ArgumentParser(description='Convert JSON to NetCDF files.')
-parser.add_argument('input', help='path to the input JSON file')
-parser.add_argument('output', help='path to store the output NetCDF file to')
-parser.add_argument('-v', '--verbose', action='store_true', help='make terminal output more verbose')
-args = parser.parse_args()
-data_filepath = args.input
-nc_filepath = args.output
-
-# Create the data file and parse
-with open(data_filepath) as data_file:
-    data_file = json.loads(data_file.read())
-base_dir = os.path.dirname(data_filepath)
-if base_dir != "":
-    base_dir = base_dir + "/"
-
-# Create the dataset and fill with the variables from the JSON file
-nc_data = Dataset(nc_filepath, 'w')
-parse(data_file, nc_data, verbose=args.verbose)
-nc_data.close()
+    return data_to_fill, variables_to_fill
