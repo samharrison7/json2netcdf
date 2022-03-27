@@ -3,7 +3,7 @@ Notable changes to json2netcdf will be documented here.
 
 ## [Unreleased]
 
-## [1.1.1] - 2022-03-27
+## [1.1.2] - 2022-03-27
 
 ### Fixed
 
@@ -18,6 +18,6 @@ This release introduces a Python package alongside the previous command line int
 First major release.
 
 [Unreleased]: https://github.com/samharrison7/json2netcdf/tree/develop 
-[1.1.1]: https://github.com/samharrison7/json2netcdf/tree/1.1.1
+[1.1.2]: https://github.com/samharrison7/json2netcdf/tree/1.1.2
 [1.1.0]: https://github.com/samharrison7/json2netcdf/tree/1.1.0
 [1.0]: https://github.com/samharrison7/json2netcdf/tree/1.0 
