@@ -1,7 +1,11 @@
-#!/usr/bin/env python3
-import sys
+"""
+Tests for the json2netcdf package. Run `pytest` in the root directory.
+You must install the package before running these tests. This can be done
+in a editable state (i.e. so edits to the source code will automatically
+be included in the install package) by running `pip install -e .` in the
+project root directory.
+"""
 import os
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../src')))
 import numpy as np
 import json2netcdf
 

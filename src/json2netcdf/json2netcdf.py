@@ -1,4 +1,3 @@
-"""Python package for converting JSON data to NetCDF data"""
 import os
 import re
 import json
@@ -8,8 +7,29 @@ from netCDF4 import Dataset
 
 
 def convert(from_json, to_netcdf='data.nc', diskless=False, log_level=0):
-    """Convert JSON data to NetCDF data. Returns the NetCDF file object
-    and so can be used as a context manager."""
+    """
+    Converts JSON data, as a file or Python dictionary, to NetCDF data,
+    either in-memory (diskless) or to a physical file.
+
+    Parameters
+    ----------
+    from_json : str or dict
+        Either the path to the JSON file to convert, or a dictionary of
+        data to convert.
+    to_netcdf : str, default 'data.nc'
+        Path to create the output NetCDF file. Ignored if `diskless=True`.
+    diskless : bool, default False
+        If `True`, create the NetCDF dataset in-memory only.
+    log_level : {0, 1, 2}
+        Controls the verbosity of terminal output, with 0 being no output
+        and 2 being the most output.
+
+    Returns
+    -------
+    netCDF4._netCDF4.Dataset
+        NetCDF4 Dataset object containing the converted data.
+    """
+
     # Is "from" a file path, in which case open it
     if type(from_json) is not dict:
         with open(from_json) as json_file:
