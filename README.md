@@ -2,6 +2,7 @@
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4286216.svg)](https://doi.org/10.5281/zenodo.4286216)
 [![fair-software.eu](https://img.shields.io/badge/fair--software.eu-%E2%97%8F%20%20%E2%97%8F%20%20%E2%97%8B%20%20%E2%97%8F%20%20%E2%97%8B-orange)](https://fair-software.eu)
+[![PyPI version](https://badge.fury.io/py/json2netcdf.svg)](https://badge.fury.io/py/json2netcdf)
 
 json2netcdf is a Python package to convert JSON data into NetCDF4 data. The motivation? A quick and easy way to write NetCDF input files without having to hand-craft a script to do so. JSON files are simple, easy to understand and write, and, crucially, follow a hierarchical format.
 
