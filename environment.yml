@@ -2,6 +2,9 @@ name: json2netcdf
 channels:
   - conda-forge
 dependencies:
-  - python=3.6
+  - python
+  - pytest
   - numpy
   - netCDF4
+  - build
+  - twine

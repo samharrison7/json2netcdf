@@ -1,14 +1,59 @@
 # Test files
 test.json
-example/compact.json
-example/bed-sediment.json
-example/soil-profile.json
-example/t.json
+
+# Generated data files
+*.nc
 
 # IDE / editor files
 *.sublime-project
 *.sublime-workspace
 .idea/
+.ipynb_checkpoints/
 
-# Generated data files
-*.nc
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+.pytest_cache/
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Logging
+*.log
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Misc
+scratch/
