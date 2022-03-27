@@ -42,7 +42,7 @@ root group (NETCDF4 data model, file format HDF5):
     groups:
 ```
 
-`from_json` can be a Python dictionary or the path to a JSON file. Set `diskless` to `True` for an in-memory NetCDF dataset to be returned (default is `False`). `to_netcdf` can be used to specify the location of the output NetCDF file you want (defaults to `data.nc`). The `convert` method can be used as a context manager, and if it isn't, the user is responsible for closing the returned dataset (`nc_file.close()`). Using the [example/data.json](./example/data.json) file:
+`from_json` can be a Python dictionary or the path to a JSON file. Set `diskless` to `True` for an in-memory NetCDF dataset to be returned (default is `False`). `to_netcdf` can be used to specify the location of the output NetCDF file you want (defaults to `data.nc`). The `convert` method can be used as a context manager, and if it isn't, the user is responsible for closing the returned dataset (`nc_file.close()`). Using the [example/data.json](https://github.com/samharrison7/json2netcdf/blob/develop/example/data.json) file:
 
 ```python
 >>> with json2netcdf.convert(from_json='example/data.json', to_netcdf='data.nc') as nc_file:
@@ -78,7 +78,7 @@ optional arguments:
 
 ## JSON input format
 
-Your JSON data must be well formatted, following the conventions described below. Take a look at the example JSON file at [example/data.json](./example/data.json) for an idea of how to format your JSON file. In this example, we are trying to create a NetCDF file with the following data structure:
+Your JSON data must be well formatted, following the conventions described below. Take a look at the example JSON file at [example/data.json](https://github.com/samharrison7/json2netcdf/blob/develop/example/data.json) for an idea of how to format your JSON file. In this example, we are trying to create a NetCDF file with the following data structure:
 
 ```
 var_group (group)
@@ -120,7 +120,7 @@ Here, the dimensions are available from the root group (i.e. to all groups in th
 
 ### Datatype 
 
-The datatype of the variable will be automatically deduced. In this example, `spatial_var` will have a datatype of `int64`, and the other variables will have a datatype of `double`. Internally, NumPy is responsible for deducing the variable type and at this moment in time, there is no way to specify what datatype your variable is ([pull requests are welcome!](./CONTRIBUTING.md))
+The datatype of the variable will be automatically deduced. In this example, `spatial_var` will have a datatype of `int64`, and the other variables will have a datatype of `double`. Internally, NumPy is responsible for deducing the variable type and at this moment in time, there is no way to specify what datatype your variable is ([pull requests are welcome!](https://github.com/samharrison7/json2netcdf/blob/develop/CONTRIBUTING.md))
 
 ### Attributes
 
@@ -143,11 +143,11 @@ Attributes can be added to the NetCDF file by creating an `attributes` object in
 }
 ```
 
-Attributes cannot yet be added to variables. [Pull requests are welcome!](./CONTRIBUTING.md).
+Attributes cannot yet be added to variables. [Pull requests are welcome!](https://github.com/samharrison7/json2netcdf/blob/develop/CONTRIBUTING.md).
 
 ### Multiple input files
 
-The main input file specified when running the script can contain reference to other JSON files in its JSON data structure, so that large data sets can be split. The path to the external file must be prefixed with `file::` and the contents of that file will be imported in the same place as the path to the file. Therefore, either variables or entire groups can be imported. An example is given at [example/external.json](external.json):
+The main input file specified when running the script can contain reference to other JSON files in its JSON data structure, so that large data sets can be split. The path to the external file must be prefixed with `file::` and the contents of that file will be imported in the same place as the path to the file. Therefore, either variables or entire groups can be imported. An example is given at [example/external.json](https://github.com/samharrison7/json2netcdf/blob/develop/example/external.json):
 
 ```json
 {
